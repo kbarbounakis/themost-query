@@ -12,6 +12,15 @@ describe('SqlFormatter', () => {
                 }
             });
         expect(sql).toBe('(EmployeeID=1)');
+
+        sql = formatter.escape({
+                $eq: [
+                    '$EmployeeID',
+                    1
+                ]
+            });
+        expect(sql).toBe('EmployeeID=1');
+
         sql = formatter.formatWhere({
                 $expr: {
                     $eq: [

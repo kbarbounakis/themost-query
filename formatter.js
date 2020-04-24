@@ -19,6 +19,7 @@ var QueryExpression = query.QueryExpression;
 var QueryField = query.QueryField;
 var instanceOf = require('./instance-of').instanceOf;
 var hasOwnProperty = require('./has-own-property').hasOwnProperty;
+var Args = require('@themost/common').Args;
 
 if (typeof Object.key !== 'function') {
     /**
@@ -190,6 +191,10 @@ SqlFormatter.prototype.escape = function(value,unquoted)
                 return formatFunc.call(this, value[key]);
             }
         }
+    }
+    // escape name reference
+    if (typeof value === 'string' && /^\$/.test(value)) {
+            return this.escapeName(value);
     }
     if (unquoted)
         return value.valueOf();
@@ -1029,7 +1034,7 @@ SqlFormatter.prototype.formatDelete = function(obj)
 
 SqlFormatter.prototype.escapeName = function(name) {
     if (typeof name === 'string')
-        return name.replace(/(\w+)$|^(\w+)$/g, this.settings.nameFormat);
+        return name.replace(/\$?(\w+)|^\$?(\w+)$/g, this.settings.nameFormat);
     return name;
 };
 
@@ -1162,8 +1167,37 @@ SqlFormatter.prototype.format = function(obj, s)
         return null;
 
 };
+
 /**
- * Format equality expression
+ * Implements AND operator formatting
+ */
+SqlFormatter.prototype.$and = function() {
+    const conditions = Array.from(arguments);
+    Args.check(conditions.length, 'Expected at least one expression.');
+    let result = '(';
+    result += conditions.map(condition => {
+        return this.formatWhere(condition);
+    }).join(' AND ');
+    result += ')';
+    return result;
+};
+
+/**
+ * Implements OR operator formatting
+ */
+SqlFormatter.prototype.$or = function() {
+    const conditions = Array.from(arguments);
+    Args.check(conditions.length, 'Expected at least one expression.');
+    let result = '(';
+    result += conditions.map(condition => {
+        return this.formatWhere(condition);
+    }).join(' OR ');
+    result += ')';
+    return result;
+};
+
+/**
+ * Formats equal query expression
  * @param {*} left
  * @param {*} right
  */
@@ -1174,7 +1208,86 @@ SqlFormatter.prototype.$eq = function(left, right) {
     if (Array.isArray(right)) {
         return this.$in(left, right);
     }
-    return `${this.escape(left)} = ${this.escape(right)}`;
+    return `${this.escape(left)}=${this.escape(right)}`;
+}
+
+/**
+ * Formats not equal query expression
+ * @param {*} left
+ * @param {*} right
+ */
+SqlFormatter.prototype.$ne = function(left, right) {
+    if (right == null) {
+        return `NOT (${this.escape(left)} IS NULL)`;
+    }
+    return `NOT (${this.escape(left)} = ${this.escape(right)})`;
+}
+
+/**
+ * Formats in query expression
+ * @param {*} left
+ * @param {*} right
+ */
+SqlFormatter.prototype.$in = function(left, right) {
+    const leftOperand = this.escape(left);
+    if (right == null) {
+        return `${leftOperand} IS NULL`;
+    }
+    if (Array.isArray(right)) {
+        if (right.length === 0) {
+            return `${leftOperand} IS NULL`;
+        }
+        const values = right.map( x => {
+            return this.escape(x);
+        });
+        return `${leftOperand} IN (${values.join(', ')})`;
+    }
+    throw new Error('Invalid in expression. Right operand must be an array');
+}
+
+/**
+ * Formats not in query expression
+ * @param {*} left
+ * @param {*} right
+ */
+SqlFormatter.prototype.$in = function(left, right) {
+    return `NOT ${this.$in(left, right)}`;
+}
+
+/**
+ * Formats lower than query expression
+ * @param {*} left
+ * @param {*} right
+ */
+SqlFormatter.prototype.$lt = function(left, right) {
+    return `${this.escape(left)}<${this.escape(right)}`;
+}
+
+/**
+ * Formats lower than or equal query expression
+ * @param {*} left
+ * @param {*} right
+ */
+SqlFormatter.prototype.$le = function(left, right) {
+    return `${this.escape(left)}<=${this.escape(right)}`;
+}
+
+/**
+ * Formats greater than query expression
+ * @param {*} left
+ * @param {*} right
+ */
+SqlFormatter.prototype.$gt = function(left, right) {
+    return `${this.escape(left)}>${this.escape(right)}`;
+}
+
+/**
+ * Formats greater than or equal query expression
+ * @param {*} left
+ * @param {*} right
+ */
+SqlFormatter.prototype.$ge = function(left, right) {
+    return `${this.escape(left)}>=${this.escape(right)}`;
 }
 
 module.exports = {
