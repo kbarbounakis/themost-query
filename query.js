@@ -1,12 +1,10 @@
 /**
- * @license
  * MOST Web Framework 2.0 Codename Blueshift
  * Copyright (c) 2017, THEMOST LP All rights reserved
  *
  * Use of this source code is governed by an BSD-3-Clause license that can be
  * found in the LICENSE file at https://themost.io/license
  */
-///
 var sprintf = require('sprintf').sprintf;
 var Args = require('@themost/common').Args;
 var _ = require('lodash');
@@ -67,74 +65,6 @@ QueryFieldAggregator.prototype.wrapWith = function(comparison) {
  */
 function QueryExpression()
 {
-    /**
-     * Gets or sets an object or an array of objects that represents the entity where a select query will be applied.
-     * e.g. $select : { products: ['id', 'title', 'price'] },
-     * $select : [{ products: ['id', 'title', 'price'] }, { manufacturer:[ 'id', 'title', 'location'] }]
-     * @type {*}
-     * @private
-     */
-    this.$select = undefined;
-    /**
-     * Gets or sets an object or an array of objects that represents the entity where a delete query will be applied.
-     * e.g. { $delete : 'products', $where : { id :100 } }
-     * @type {*}
-     * @private
-     */
-    this.$delete = undefined;
-    /**
-     Gets or sets an object or an array of objects that represents the entity where an update query will be applied.
-     * e.g. $update : { products: {title: 'string #1', price: 100}, $where: { id:100 } }
-     * @type {*}
-     * @private
-     */
-    this.$update = undefined;
-    /**
-     * Gets or sets an object or an array of objects that represents the entity where an insert query will be applied.
-     * e.g. $insert : { products: { title: 'string #1', price: 100} }
-     * @type {*}
-     * @private
-     */
-    this.$insert = undefined;
-    /**
-     * Gets or sets the order statement of this query
-     * e.g. $order: [{ $asc: 'price' }, { $desc: 'dateCreated' }] or $order: [{ $asc: ['price', 'dateCreated'] }]
-     * @type {*}
-     * @private
-     */
-    this.$order = undefined;
-    /**
-     * Gets or sets the group by statement of this query
-     * e.g. $group: ['price', 'dateCreated']
-     * @type {*}
-     * @private
-     */
-    this.$group = undefined;
-    /**
-     * @type {*}
-     * @private
-     */
-    this.$expand = undefined;
-    /**
-     * Represents the filter statement of this query expression
-     * e.g. $where : { { price: 100} }
-     * @type {*}
-     * @private
-     */
-    this.$where = undefined;
-    /**
-     * Represents a prepared filter that
-     * e.g. $where : { { price: 100} }
-     * @type {*}
-     * @private
-     */
-    this.$prepared = undefined;
-    /**
-     * Represents a select query with only fixed values e.g. SELECT * FROM (SELECT 1 AS id,'test' AS title) t0
-     * @type {*}
-     * @private
-     */
-    this.$fixed = undefined;
     /**
      * @private
      */

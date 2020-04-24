@@ -61,3 +61,30 @@ export declare class SqlUtils {
      */
     static escape(val: any): string
 }
+
+/**
+ * Gets the first property name of an object.
+ * @param any - The object to search
+ * @returns {string} - A string which represents the name of the first property of the specified object
+ */
+export declare function getOwnPropertyName(any?: any): string;
+
+/**
+ * Checks if the given string is a method or name reference e.g. $dateCreated or $and etc.
+ * @param {string} str - A string expression to validate
+ * @returns {boolean}
+ */
+export declare function isMethodOrNameReference(str: string): boolean;
+/**
+ * Returns a string which indicates that the given object has a property with a name reference
+ * e.g. $UserTable, $name etc.
+ * @param {*} any
+ * @returns {string}
+ */
+export declare function getOwnPropertyWithNameRef(any: any): string;
+/**
+ * Returns a string which indicates that the given string is following name reference format.
+ * @param {string} str
+ * @returns {string}
+ */
+export declare function hasNameReference(str: string): string;

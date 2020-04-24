@@ -10,12 +10,15 @@
  */
 ///
 var SqlUtils = require('./utils').SqlUtils;
+var getOwnPropertyName = require('./utils').getOwnPropertyName;
+var isMethodOrNameReference = require('./utils').isMethodOrNameReference;
 var sprintf = require('sprintf').sprintf;
 var _ = require('lodash');
 var query = require('./query');
 var QueryExpression = query.QueryExpression;
 var QueryField = query.QueryField;
 var instanceOf = require('./instance-of').instanceOf;
+var hasOwnProperty = require('./has-own-property').hasOwnProperty;
 
 if (typeof Object.key !== 'function') {
     /**
@@ -27,7 +30,7 @@ if (typeof Object.key !== 'function') {
         if (typeof obj === 'undefined' || obj === null)
             return null;
         for(var prop in obj) {
-            if (obj.hasOwnProperty(prop))
+            if (hasOwnProperty(obj, prop))
                 return prop;
         }
         return null;
@@ -39,7 +42,7 @@ var aliasKeyword = ' AS ';
  * @this SqlFormatter
  */
 function getAliasKeyword() {
-    if (this.settings.hasOwnProperty('useAliasKeyword') === false) {
+    if (hasOwnProperty(this.settings, 'useAliasKeyword') === false) {
         return aliasKeyword;
     }
     if (this.settings.useAliasKeyword) {
@@ -96,7 +99,7 @@ SqlFormatter.prototype.formatComparison = function(comparison)
         }
         var compares = [];
         for(key in comparison) {
-            if (comparison.hasOwnProperty(key))
+            if (hasOwnProperty(comparison, key))
                 compares.push(key);
         }
         if (compares.length===0)
@@ -149,27 +152,42 @@ SqlFormatter.prototype.isComparison = function(obj) {
  */
 SqlFormatter.prototype.escape = function(value,unquoted)
 {
-    if (_.isNil(value))
+    if (value == null) {
         return SqlUtils.escape(null);
-
+    }
     if (typeof value === 'object')
     {
         //add an exception for Date object
-        if (value instanceof Date)
-            return SqlUtils.escape(value);
-        if (value.hasOwnProperty('$name'))
+        if (value instanceof Date) {
+           return SqlUtils.escape(value); 
+        }
+        // parse literal values e.g. { $literal: 99.5 }
+        if (hasOwnProperty(value, '$literal')) {
+            if (typeof value.$literal === 'object') {
+                // get literal property
+                var literalProperty = getOwnPropertyName(value.$literal);
+                // if literal is an expression e.g. { $add: [ 100, 45 ] }
+                if (literalProperty && isMethodOrNameReference(literalProperty)) {
+                    // if expression is a formatter method e.g. $add
+                    if (typeof this[literalProperty] === 'function') {
+                        // call formatter method
+                        return this[literalProperty].apply(this, value.$literal);
+                    }
+                }
+            }
+            return SqlUtils.escape(value.$literal);
+        }
+        if (hasOwnProperty(value, '$name'))
             return this.escapeName(value.$name);
         else {
-            //check if value is a known expression e.g. { $length:"name" }
-            var keys = _.keys(value),
-                key0 = keys[0];
-            if (_.isString(key0) && /^\$/.test(key0) && _.isFunction(this[key0])) {
-                var exprFunc = this[key0];
-                //get arguments
-                var args = _.map(keys, function(x) {
-                    return value[x];
-                });
-                return exprFunc.apply(this, args);
+            //check if value is a known expression e.g. { $length: "name" }
+            var key = getOwnPropertyName(value);
+            if ((typeof key === 'string') && /^\$/.test(key) && (typeof this[key] == 'function')) {
+                var formatFunc = this[key];
+                if (Array.isArray(value[key])) {
+                    return formatFunc.apply(this, value[key]);
+                }
+                return formatFunc.call(this, value[key]);
             }
         }
     }
@@ -341,6 +359,7 @@ SqlFormatter.prototype.formatWhere = function(where)
                         }
                         //call formatter function
                         var f0 = fn.apply(this, args);
+                        // eslint-disable-next-line no-useless-escape
                         return self.formatComparison(argn).replace(/%s/g, f0.replace('$','\$'));
                     }
                     else {
@@ -573,7 +592,7 @@ SqlFormatter.prototype.isField = function(obj) {
     if (_.isNil(obj))
         return false;
     if (typeof obj === 'object')
-        if (obj.hasOwnProperty('$name'))
+        if (hasOwnProperty(obj, '$name'))
             return true;
     return false;
 };
@@ -866,7 +885,7 @@ SqlFormatter.prototype.formatField = function(obj)
     }
     if (typeof obj === 'object') {
         //if field is a constant e.g. { $value:1000 }
-        if (obj.hasOwnProperty('$value'))
+        if (hasOwnProperty(obj, '$value'))
             return this.escapeConstant(obj['$value']);
         //get table name
         var tableName = Object.key(obj);
@@ -948,7 +967,7 @@ SqlFormatter.prototype.formatInsert = function(obj)
     var obj1 = obj.$insert[entity];
     var props = [];
     for(var prop in obj1)
-        if (obj1.hasOwnProperty(prop))
+        if (hasOwnProperty(obj1, prop))
             props.push(prop);
     sql = sql.concat('INSERT INTO ', self.escapeName(entity), '(' , _.map(props, function(x) { return self.escapeName(x); }).join(', '), ') VALUES (',
         _.map(props, function(x)
@@ -975,7 +994,7 @@ SqlFormatter.prototype.formatUpdate = function(obj)
     var obj1 = obj.$update[entity];
     var props = [];
     for(var prop in obj1)
-        if (obj1.hasOwnProperty(prop))
+        if (hasOwnProperty(obj1, prop))
             props.push(prop);
     //add basic INSERT statement
     sql = sql.concat('UPDATE ', self.escapeName(entity), ' SET ',
@@ -1143,9 +1162,21 @@ SqlFormatter.prototype.format = function(obj, s)
         return null;
 
 };
-
-if (typeof exports !== 'undefined') {
-    module.exports = {
-        SqlFormatter:SqlFormatter
+/**
+ * Format equality expression
+ * @param {*} left
+ * @param {*} right
+ */
+SqlFormatter.prototype.$eq = function(left, right) {
+    if (right == null) {
+        return `${this.escape(left)} IS NULL`;
     }
+    if (Array.isArray(right)) {
+        return this.$in(left, right);
+    }
+    return `${this.escape(left)} = ${this.escape(right)}`;
 }
+
+module.exports = {
+    SqlFormatter
+};

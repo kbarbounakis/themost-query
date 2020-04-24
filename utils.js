@@ -1,5 +1,4 @@
 /**
- * @license
  * MOST Web Framework 2.0 Codename Blueshift
  * Copyright (c) 2017, THEMOST LP All rights reserved
  *
@@ -251,8 +250,75 @@ SqlUtils.format = function(sql, values) {
     return format(sql, values);
 };
 
+const REFERENCE_REGEXP = /^\$/;
+
+// noinspection JSUnusedGlobalSymbols
+/**
+ * Returns a string which represents the name of the first property of an object
+ * @param {*} any
+ * @returns {*}
+ */
+function getOwnPropertyName(any) {
+    if (any) {
+        // noinspection LoopStatementThatDoesntLoopJS
+        for(let key in any) {
+            if  (Object.prototype.hasOwnProperty.call(any, key)) {
+                return key;
+            }
+        }
+    }
+}
+
+// noinspection JSUnusedGlobalSymbols
+/**
+ * Returns true if the specified string is a method (e.g. $concat) or name reference (e.g. $dateCreated)
+ * @param {string} str
+ * @returns {*}
+ */
+function isMethodOrNameReference(str) {
+    return REFERENCE_REGEXP.test(str)
+}
+
+// noinspection JSUnusedGlobalSymbols
+/**
+ * Returns a string which indicates that the given string is following name reference format.
+ * @param {string} str
+ * @returns {string}
+ */
+function hasNameReference(str) {
+    if (str) {
+        if (REFERENCE_REGEXP.test(str)) {
+            return str.substr(1);
+        }
+    }
+}
+
+// noinspection JSUnusedGlobalSymbols
+/**
+ * Returns a string which indicates that the given object has a property with a name reference
+ * e.g. $UserTable, $name etc.
+ * @param {*} any
+ * @returns {string|*}
+ */
+function getOwnPropertyWithNameRef(any) {
+    if (any) {
+        // noinspection LoopStatementThatDoesntLoopJS
+        for(let key in any) {
+            if (Object.prototype.hasOwnProperty.call(any, key) && REFERENCE_REGEXP.test(key)) {
+                return key;
+            }
+            break;
+        }
+    }
+}
 
 if (typeof exports !== 'undefined') {
-    module.exports.QueryUtils = QueryUtils;
-    module.exports.SqlUtils = SqlUtils;
+    module.exports = {
+        getOwnPropertyName,
+        isMethodOrNameReference,
+        hasNameReference,
+        getOwnPropertyWithNameRef,
+        QueryUtils,
+        SqlUtils
+    }
 }

@@ -1,2 +1,14 @@
+
+# node.js
 node_modules
+.eslintrc
+
+# test
+spec
+
+# Editors
+.theia
+.idea
+.vscode
 .DS_Store
+.gitpod.yml

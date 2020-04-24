@@ -1,12 +1,9 @@
 /**
- * MOST Web Framework
- * A JavaScript Web Framework
- * http://themost.io
+ * MOST Web Framework 2.0 Codename Blueshift
+ * Copyright (c) 2017, THEMOST LP All rights reserved
  *
- * Copyright (c) 2014, Kyriakos Barbounakis k.barbounakis@gmail.com, Anthi Oikonomou anthioikonomou@gmail.com
- *
- * Released under the BSD3-Clause license
- * Date: 2014-02-15
+ * Use of this source code is governed by an BSD-3-Clause license that can be
+ * found in the LICENSE file at https://themost.io/license
  */
 var _ = require("lodash");
 var LangUtils = require("@themost/common/utils").LangUtils;
@@ -378,7 +375,7 @@ OpenDataParser.prototype.parseMethodCall = function(callback) {
         self.moveNext();
         self.expect(SyntaxToken.ParenOpen);
         var args = [];
-        self.parseMethodCallArguments(args, function(err, result) {
+        self.parseMethodCallArguments(args, function(err) {
             if (err) {
                 callback.call(self, err);
             }
@@ -821,7 +818,7 @@ OpenDataParser.prototype.parseString = function()
 
 OpenDataParser.prototype.skipDigits = function(current)
 {
-    var _source = this.source, _offset = this.offset;
+    var _source = this.source;
     if (!OpenDataParser.isDigit(_source.charAt(current)))
         return null;
     current++;

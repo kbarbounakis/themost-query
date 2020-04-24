@@ -1,10 +1,16 @@
 {
   "name": "@themost/query",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "description": "MOST Web Framework Codename Blueshift - Query Module",
   "main": "index.js",
+  "scripts": {
+    "test": "jasmine"
+  },
   "peerDependencies": {
     "@themost/common": "^2.5.0"
+  },
+  "engines": {
+    "node": ">=8"
   },
   "repository": {
     "type": "git",
@@ -25,29 +31,9 @@
     "symbol": "^0.3.1"
   },
   "devDependencies": {
-    "eslint": "^4.12.1"
-  },
-  "eslintConfig": {
-    "env": {
-      "browser": true,
-      "node": true,
-      "es6": false,
-      "jquery": true
-    },
-    "globals": {
-      "describe": false,
-      "it": false
-    },
-    "extends": "eslint:recommended",
-    "rules": {
-      "no-console": "warn",
-      "no-invalid-this": "warn",
-      "no-undef": "error",
-      "no-unused-vars": "warn",
-      "strict": [
-        2,
-        "never"
-      ]
-    }
+    "@types/jasmine": "^3.5.10",
+    "eslint": "^6.8.0",
+    "jasmine": "^3.5.0",
+    "jasmine-spec-reporter": "^5.0.2"
   }
 }
