@@ -1,2 +1,2 @@
-import {initDatabase} from './TestMemoryDatabase';
+const {initDatabase} = require('./TestMemoryDatabase');
 initDatabase();

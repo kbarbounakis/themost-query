@@ -6,13 +6,12 @@
  * found in the LICENSE file at https://themost.io/license
  */
 
-import _ from 'lodash';
-import { Args } from '@themost/common';
-import { SqlUtils } from './SqlUtils';
-import { getOwnPropertyName, isMethodOrNameReference } from './query';
-import { QueryCollection } from './QueryCollection';
-import { QueryExpression } from './QueryExpression';
-
+const { Args } = require('@themost/common');
+const { SqlUtils } = require('./SqlUtils');
+const { getOwnPropertyName, isMethodOrNameReference } = require('./query');
+const { QueryCollection } = require('./QueryCollection');
+const { QueryExpression } = require('./QueryExpression');
+const {hasOwnProperty} = require('./has-own-property');
 
 class ExpectedWhereExpression extends Error {
     /**
@@ -74,7 +73,7 @@ class ExpectedCollection extends Error {
     }
 }
 
-export class SqlFormatter {
+class SqlFormatter {
     constructor() {
         this.settings = {
             nameFormat: '`$1`',
@@ -100,7 +99,7 @@ export class SqlFormatter {
                 return SqlUtils.escape(value);
             }
             // parse literal values e.g. { $literal: 99.5 }
-            if (value.hasOwnProperty('$literal')) {
+            if (hasOwnProperty(value, '$literal')) {
                 if (typeof value.$literal === 'object') {
                     // get literal property
                     const literalProperty = getOwnPropertyName(value.$literal);
@@ -115,7 +114,7 @@ export class SqlFormatter {
                 }
                 return SqlUtils.escape(value.$literal);
             }
-            if (value.hasOwnProperty('$name')) {
+            if (hasOwnProperty(value, '$name')) {
                 return this.escapeName(value.$name);
             }
             else {
@@ -1054,3 +1053,7 @@ export class SqlFormatter {
     }
 
 }
+
+module.exports = {
+    SqlFormatter
+};

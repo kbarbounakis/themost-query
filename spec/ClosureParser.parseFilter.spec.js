@@ -1,11 +1,11 @@
-import {ClosureParser} from '../ClosureParser';
+import { ClosureParser } from '../closures';
 import { QueryCollection } from '../QueryCollection';
 import { QueryExpression } from '../QueryExpression';
 import { SqlFormatter } from '../SqlFormatter';
 // eslint-disable-next-line no-unused-vars
-import {round, ceil, floor, mod, multiply, subtract, divide, add, bitAnd, min, max} from 'mathjs';
+import { round, ceil, floor, mod, multiply, subtract, divide, add, bitAnd, min, max } from 'mathjs';
 import { MemoryAdapter } from './TestMemoryAdapter';
-import {initDatabase} from './TestMemoryDatabase';
+import { initDatabase } from './TestMemoryDatabase';
 
 describe('ClosureParser.parseFilter()', () => {
     beforeAll(async () => {

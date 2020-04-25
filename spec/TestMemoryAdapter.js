@@ -6,11 +6,11 @@
  * found in the LICENSE file at https://themost.io/license
  */
 import initSqlJs from 'sql.js';
-import {SqlUtils} from '../SqlUtils';
-import {QueryExpression} from '../QueryExpression';
-import {QueryField} from '../QueryField';
-import {MemoryFormatter} from './TestMemoryFormatter';
-import {TraceUtils} from '@themost/common';
+import { SqlUtils } from '../SqlUtils';
+import { QueryExpression } from '../QueryExpression';
+import { QueryField } from '../QueryField';
+import { MemoryFormatter } from './TestMemoryFormatter';
+import { TraceUtils } from '@themost/common';
 
 const INSTANCE_DB = new Map();
 const DateTimeRegex = /^\d{4}-([0]\d|1[0-2])-([0-2]\d|3[01])(?:[T ](\d+):(\d+)(?::(\d+)(?:\.(\d+))?)?)(?:Z(-?\d*))?([+-](\d+):(\d+))?$/;
@@ -18,7 +18,7 @@ const DateTimeRegex = /^\d{4}-([0]\d|1[0-2])-([0-2]\d|3[01])(?:[T ](\d+):(\d+)(?
 /**
  *
  */
-export class MemoryAdapter {
+class MemoryAdapter {
 
     static isDate(value) {
         if (value instanceof Date) {
@@ -330,12 +330,13 @@ export class MemoryAdapter {
             return result;
         };
         (async function migrate() {
+            
             // check if table `migrations`  exists or not
             let exists = await self.table('migrations').existsAsync();
             if (exists === false) {
                 // create table `migrations`
                 await self.executeAsync('CREATE TABLE "migrations" ("id" INTEGER PRIMARY KEY AUTOINCREMENT, ' +
-                    '"appliesTo" TEXT NOT NULL, "model" TEXT NULL, "description" TEXT,"version" TEXT NOT NULL)')
+                '"appliesTo" TEXT NOT NULL, "model" TEXT NULL, "description" TEXT,"version" TEXT NOT NULL)');
             }
             // validate target version
             if (migration.appliesTo == null) {
@@ -489,9 +490,9 @@ export class MemoryAdapter {
                 migration.description
             ]);
         })().then(() => {
-            setTimeout(()=> {
+            process.nextTick(() => {
                 return callback();
-            }, 100);
+            });
         }).catch( err => {
             return callback(err);
         });
@@ -741,7 +742,7 @@ export class MemoryAdapter {
              * @param {ExistsCallback} callback
              */
             exists:function(callback) {
-                self.execute(`SELECT COUNT(*) count FROM sqlite_master WHERE name=? AND type=\'view\';`, [name], function(err, result) {
+                self.execute(`SELECT COUNT(*) count FROM sqlite_master WHERE name=? AND type='view';`, [name], function(err, result) {
                     if (err) { callback(err); return; }
                     callback(null, (result[0].count>0));
                 });
@@ -1168,6 +1169,11 @@ export class MemoryAdapter {
  * @param {*} options
  * @returns {MemoryAdapter}
  */
-export function createInstance(options) {
+function createInstance(options) {
     return new MemoryAdapter(options);
 }
+
+export {
+    MemoryAdapter,
+    createInstance
+};

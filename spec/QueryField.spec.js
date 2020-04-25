@@ -1,4 +1,4 @@
-const {QueryField} = require('../QueryField');
+import { QueryField } from '../QueryField';
 
 describe('QueryField', () => {
     it('should create QueryField', () => {

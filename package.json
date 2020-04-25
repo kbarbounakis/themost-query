@@ -7,7 +7,7 @@
     "test": "jasmine"
   },
   "peerDependencies": {
-    "@themost/common": "^2.5.0"
+    "@themost/common": ">=2.5.0"
   },
   "engines": {
     "node": ">=8"
@@ -31,9 +31,12 @@
     "symbol": "^0.3.1"
   },
   "devDependencies": {
+    "@themost-devkit/build": "^0.1.1",
+    "@themost/common": "^2.5.2",
     "@types/jasmine": "^3.5.10",
     "eslint": "^6.8.0",
     "jasmine": "^3.5.0",
-    "jasmine-spec-reporter": "^5.0.2"
+    "jasmine-spec-reporter": "^5.0.2",
+    "sql.js": "^1.2.2"
   }
 }

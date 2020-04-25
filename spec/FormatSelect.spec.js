@@ -2,14 +2,14 @@ import { QueryCollection } from '../QueryCollection';
 import { QueryExpression } from '../QueryExpression';
 // eslint-disable-next-line no-unused-vars
 import { MemoryAdapter } from './TestMemoryAdapter';
-import {initDatabase} from './TestMemoryDatabase';
+import { initDatabase } from './TestMemoryDatabase';
 
 describe('Format Select Expressions', () => {
     beforeAll(async () => {
-        await initDatabase();
+        return await initDatabase();
     });
 
-    it('should use QueryExpression.select()', async () => {
+    fit('should use QueryExpression.select()', async () => {
         const Products = new QueryCollection('Products');
         let a = new QueryExpression().select( x => {
             x.ProductID,

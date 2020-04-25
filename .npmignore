@@ -2,6 +2,7 @@
 # node.js
 node_modules
 .eslintrc
+babel.config.js
 
 # test
 spec

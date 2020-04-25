@@ -10,7 +10,9 @@ import Orders from './test/config/models/Order.json';
 import OrderDetails from './test/config/models/OrderDetail.json';
 
 async function migrateAsync(model) {
-    await new MemoryAdapter().migrateAsync({
+    const db = new MemoryAdapter();
+    try {
+        await db.migrateAsync({
             version: model.version,
             appliesTo: model.source,
             model: model.name,
@@ -18,13 +20,21 @@ async function migrateAsync(model) {
         });
         model.seed.forEach(async (item) => {
             const q = new QueryExpression().insert(item).into(model.source);
-            await new MemoryAdapter().executeAsync(q);
+            await db.executeAsync(q);
         });
+        await db.closeAsync();
+    }
+    catch (err) {
+        await db.closeAsync();
+        throw err;
+    }
+    
+    
 }
 
-export async function initDatabase() {
+async function initDatabase() {
     // change NODE_ENV (do not log statement while adding data)
-    //process.env.NODE_ENV = 'devel';
+    process.env.NODE_ENV = 'development';
     await migrateAsync(Customers);
     await migrateAsync(Shippers);
     await migrateAsync(Categories);
@@ -36,3 +46,8 @@ export async function initDatabase() {
     // restore NODE_ENV
     process.env.NODE_ENV = 'development';
 }
+
+export {
+    migrateAsync,
+    initDatabase
+};

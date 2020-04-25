@@ -4,13 +4,21 @@
       "node": true,
       "es6": true
     },
+    "parserOptions": {
+      "sourceType": "module",
+      "ecmaVersion": 2017
+    },
     "globals": {
       "jasmine": false,
       "describe": false,
       "it": false,
       "fdescribe": false,
       "fit": false,
-      "expect": false
+      "expect": false,
+      "beforeAll": false,
+      "beforeEach": false,
+      "afterAll": false,
+      "afterEach": false
     },
     "extends": "eslint:recommended",
     "rules": {

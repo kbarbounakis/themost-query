@@ -13,7 +13,7 @@ class MathJsMethodParser {
             return floor(1);
         };
         let expr = parse(`void(${func1.toString()})`);
-        // get method call to find out import name of mathjs
+        // get method call to find out name of mathjs
         let identifier = expr.body[0].expression.argument.body.body[0].argument.callee;
         this.prefix = [];
         if (Array.isArray(identifier.expressions)) {

@@ -1,8 +1,8 @@
 import { QueryExpression } from '../QueryExpression';
 // eslint-disable-next-line no-unused-vars
-import {add, subtract, multiply, divide, bitAnd } from 'mathjs';
+import { add, subtract, multiply, divide, bitAnd } from 'mathjs';
 import { MemoryAdapter } from './TestMemoryAdapter';
-import {initDatabase} from './TestMemoryDatabase';
+import { initDatabase } from './TestMemoryDatabase';
 
 describe('Arithmetic Functions', () => {
     beforeAll(async () => {

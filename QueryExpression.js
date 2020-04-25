@@ -11,7 +11,7 @@ const {Args} = require('@themost/common');
 const { QueryField } = require('./QueryField');
 const { QueryCollection } = require('./QueryCollection');
 const {getOwnPropertyName, isMethodOrNameReference} = require('./query');
-const { ClosureParser } = require('./ClosureParser');
+const { ClosureParser } = require('./closures');
 const {hasOwnProperty} = require('./has-own-property');
 
 class InvalidLeftOperandError extends Error {

@@ -5,7 +5,7 @@
  * Use of this source code is governed by an BSD-3-Clause license that can be
  * found in the LICENSE file at https://themost.io/license
  */
-import {SqlFormatter} from '../SqlFormatter';
+import { SqlFormatter } from '../SqlFormatter';
 
 const REGEXP_SINGLE_QUOTE = /\\'/g;
 const SINGLE_QUOTE_ESCAPE = '\'\'';
@@ -33,7 +33,7 @@ function zeroPad(number, length) {
 /**
  * @augments {SqlFormatter}
  */
-export class MemoryFormatter extends SqlFormatter {
+class MemoryFormatter extends SqlFormatter {
 
     static get NAME_FORMAT() {
         return '"$1"'
@@ -263,3 +263,6 @@ export class MemoryFormatter extends SqlFormatter {
     }
 }
 
+export {
+    MemoryFormatter
+};

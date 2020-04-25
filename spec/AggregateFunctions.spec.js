@@ -1,9 +1,9 @@
 import { QueryCollection } from '../QueryCollection';
 import { QueryExpression } from '../QueryExpression';
 // eslint-disable-next-line no-unused-vars
-import {min, max, mean, sum } from 'mathjs';
+import { min, max, mean, sum } from 'mathjs';
 import { MemoryAdapter } from './TestMemoryAdapter';
-import {initDatabase} from './TestMemoryDatabase';
+import { initDatabase } from './TestMemoryDatabase';
 
 describe('Aggregate Functions', () => {
     beforeAll(async () => {
