@@ -4,7 +4,8 @@
   "description": "MOST Web Framework Codename Blueshift - Query Module",
   "main": "index.js",
   "scripts": {
-    "test": "jasmine"
+    "test": "jasmine",
+    "build": "babel src --out-dir dist --copy-files --source-maps"
   },
   "peerDependencies": {
     "@themost/common": ">=2.5.0"
