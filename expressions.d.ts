@@ -1,7 +1,6 @@
 /**
- * @license
- * MOST Web Framework 2.0 Codename Blueshift
- * Copyright (c) 2017, THEMOST LP All rights reserved
+ * MOST Web Framework 3.0 Codename Zero Gravity
+ * Copyright (c) 2014-2019, THEMOST LP All rights reserved
  *
  * Use of this source code is governed by an BSD-3-Clause license that can be
  * found in the LICENSE file at https://themost.io/license
@@ -28,6 +27,7 @@ export declare class Operators {
     static NotIn : string;
     static And : string;
     static Or : string;
+    static BitAnd : string;
 }
 
 export declare class ArithmeticExpression implements IExpression {
@@ -41,7 +41,7 @@ export declare class MemberExpression implements IExpression {
 }
 
 export declare class LogicalExpression implements IExpression {
-    constructor(operator: string, args: Array<any>);
+    constructor(operator: string, args: any[]);
     exprOf(): any;
 }
 
@@ -56,11 +56,17 @@ export declare class ComparisonExpression implements IExpression {
 }
 
 export declare class MethodCallExpression implements IExpression {
-    constructor(name: string, args: Array<any>);
+    constructor(name: string, args: any[]);
     exprOf(): any;
 }
 
 export declare class SequenceExpression implements IExpression {
+    constructor();
+    value: any[];
+    exprOf(): any;
+}
+
+export declare class ObjectExpression implements IExpression {
     constructor();
     exprOf(): any;
 }
@@ -73,9 +79,9 @@ export declare function createMemberExpression(name: string): MemberExpression;
 
 export declare function createLiteralExpression(value: any): LiteralExpression;
 
-export declare function createMethodCallExpression(name: string, args: Array<any>): MethodCallExpression;
+export declare function createMethodCallExpression(name: string, args?: any[]): MethodCallExpression;
 
-export declare function createLogicalExpression(name: string, args: Array<any>): LogicalExpression;
+export declare function createLogicalExpression(name: string, args?: any[]): LogicalExpression;
 
 export declare function isArithmeticExpression(any: any): boolean;
 
