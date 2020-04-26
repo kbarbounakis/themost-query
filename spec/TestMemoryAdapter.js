@@ -12,6 +12,7 @@ import { QueryField } from '../src';
 import { MemoryFormatter } from './TestMemoryFormatter';
 import { TraceUtils } from '@themost/common';
 
+
 const INSTANCE_DB = new Map();
 const DateTimeRegex = /^\d{4}-([0]\d|1[0-2])-([0-2]\d|3[01])(?:[T ](\d+):(\d+)(?::(\d+)(?:\.(\d+))?)?)(?:Z(-?\d*))?([+-](\d+):(\d+))?$/;
 initSqlJs();

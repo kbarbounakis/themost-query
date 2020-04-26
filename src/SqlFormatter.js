@@ -11,6 +11,7 @@ import { SqlUtils } from './SqlUtils';
 import { getOwnPropertyName, isMethodOrNameReference } from './query';
 import { QueryCollection } from './QueryCollection';
 import { QueryExpression } from './QueryExpression';
+import { hasOwnProperty } from './has-own-property';
 
 class ExpectedWhereExpression extends Error {
     /**

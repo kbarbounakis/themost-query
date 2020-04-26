@@ -16,7 +16,6 @@ import {
     isArithmeticOperator,
     isComparisonOperator,
     isLiteralExpression,
-    MethodCallExpression,
     ObjectExpression,
     Operators,
     SequenceExpression,
@@ -28,7 +27,9 @@ import {MathJsMethodParser} from './MathJsMethodParser';
 import {MathMethodParser} from './MathMethodParser';
 import {DateMethodParser} from './DateMethodParser';
 import {StringMethodParser} from './StringMethodParser';
+import {FallbackMethodParser} from './FallbackMethodParser';
 import {hasOwnProperty} from './has-own-property';
+
 
 const ExpressionTypes = {
     LogicalExpression : 'LogicalExpression',
@@ -53,18 +54,6 @@ const ExpressionTypes = {
  */
 function count() {
     return arguments.length;
-}
-
-class FallbackMethodParser {
-    test(name) {
-        const method = /\.(\w+)$/.exec(name)[1];
-        if (typeof FallbackMethodParser[method] === 'function') {
-            return FallbackMethodParser[method];
-        }
-    }
-    static count(args) {
-        return new MethodCallExpression('count', args);
-    }
 }
 
 // // extend StaticMethodParser
