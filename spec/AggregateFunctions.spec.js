@@ -1,5 +1,4 @@
-import { QueryCollection } from '../QueryCollection';
-import { QueryExpression } from '../QueryExpression';
+import { QueryCollection, QueryExpression, count } from '../src';
 // eslint-disable-next-line no-unused-vars
 import { min, max, mean, sum } from 'mathjs';
 import { MemoryAdapter } from './TestMemoryAdapter';

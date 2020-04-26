@@ -1,7 +1,7 @@
 {
     "$schema": "https://themost-framework.github.io/themost/models/2018/2/schema.json",
-    "title": "Order",
-    "name": "Orders",
+    "title": "Orders",
+    "name": "Order",
     "source": "Orders",
     "view": "Orders",
     "version": "1.0",

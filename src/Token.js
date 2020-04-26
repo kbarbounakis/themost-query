@@ -91,6 +91,6 @@ class Token {
     }
 }
 
-module.exports = {
+export {
     Token
 };

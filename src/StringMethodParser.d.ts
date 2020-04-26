@@ -5,7 +5,7 @@
  * Use of this source code is governed by an BSD-3-Clause license that can be
  * found in the LICENSE file at https://themost.io/license
  */
-import {MethodCallExpression} from "../expressions";
+import {MethodCallExpression} from "./expressions";
 
 export declare class StringMethodParser {
     startsWith(args: any[]): MethodCallExpression;

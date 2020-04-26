@@ -5,7 +5,7 @@
  * Use of this source code is governed by an BSD-3-Clause license that can be
  * found in the LICENSE file at https://themost.io/license
  */
-const {
+import {
     LiteralExpression,
     createArithmeticExpression,
     createComparisonExpression,
@@ -21,13 +21,14 @@ const {
     Operators,
     SequenceExpression,
     MemberExpression
-} = require('../expressions');
-const {parse} = require('esprima');
-const {Args} = require('@themost/common');
-const {MathJsMethodParser} = require("./MathJsMethodParser");
-const {MathMethodParser} = require("./MathMethodParser");
-const {DateMethodParser} = require("./DateMethodParser");
-const {StringMethodParser} = require("./StringMethodParser");
+} from './expressions';
+import {parse} from 'esprima';
+import {Args} from '@themost/common';
+import {MathJsMethodParser} from './MathJsMethodParser';
+import {MathMethodParser} from './MathMethodParser';
+import {DateMethodParser} from './DateMethodParser';
+import {StringMethodParser} from './StringMethodParser';
+import {hasOwnProperty} from './has-own-property';
 
 const ExpressionTypes = {
     LogicalExpression : 'LogicalExpression',
@@ -52,6 +53,18 @@ const ExpressionTypes = {
  */
 function count() {
     return arguments.length;
+}
+
+class FallbackMethodParser {
+    test(name) {
+        const method = /\.(\w+)$/.exec(name)[1];
+        if (typeof FallbackMethodParser[method] === 'function') {
+            return FallbackMethodParser[method];
+        }
+    }
+    static count(args) {
+        return new MethodCallExpression('count', args);
+    }
 }
 
 // // extend StaticMethodParser
@@ -80,7 +93,8 @@ class ClosureParser {
             new MathJsMethodParser(),
             new MathMethodParser(),
             new DateMethodParser(),
-            new StringMethodParser()
+            new StringMethodParser(),
+            new FallbackMethodParser()
         ];
         this.params = null;
 
@@ -113,7 +127,7 @@ class ClosureParser {
         }
         if (res && res instanceof ObjectExpression) {
             return Object.keys(res).map( key => {
-                if (res.hasOwnProperty(key)) {
+                if (hasOwnProperty(res, key)) {
                     const result = {};
                     Object.defineProperty(result, key, {
                         configurable: true,
@@ -530,7 +544,8 @@ class ClosureParser {
      * @param args
      * @returns {MethodCallExpression}
      */
-    resolveMethod(method, args) {
+    // eslint-disable-next-line no-unused-vars
+    resolveMethod() {
         return null;
     }
 }
@@ -553,7 +568,7 @@ function parentMemberExpressionToString(expr) {
     }
 }
 
-module.exports = {
+export {
     count,
     ClosureParser
 }

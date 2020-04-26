@@ -6,15 +6,15 @@
  * found in the LICENSE file at https://themost.io/license
  */
 import initSqlJs from 'sql.js';
-import { SqlUtils } from '../SqlUtils';
-import { QueryExpression } from '../QueryExpression';
-import { QueryField } from '../QueryField';
+import { SqlUtils } from '../src';
+import { QueryExpression } from '../src';
+import { QueryField } from '../src';
 import { MemoryFormatter } from './TestMemoryFormatter';
 import { TraceUtils } from '@themost/common';
 
 const INSTANCE_DB = new Map();
 const DateTimeRegex = /^\d{4}-([0]\d|1[0-2])-([0-2]\d|3[01])(?:[T ](\d+):(\d+)(?::(\d+)(?:\.(\d+))?)?)(?:Z(-?\d*))?([+-](\d+):(\d+))?$/;
-
+initSqlJs();
 /**
  *
  */
@@ -54,7 +54,7 @@ class MemoryAdapter {
             return callback();
         }
         // init database
-        return initSqlJs().then( SQL => {
+        initSqlJs().then( SQL => {
             // try to get instance
             const db = INSTANCE_DB.get(self.options.name);
             if (db) {
@@ -69,7 +69,6 @@ class MemoryAdapter {
                 // set instance database
                 INSTANCE_DB.set(self.options.name, self.rawConnection);
             }
-            // and return
             return callback();
         }).catch( err => {
             return callback(err);
@@ -83,12 +82,12 @@ class MemoryAdapter {
      */
     openAsync() {
         return new Promise((resolve, reject) => {
-            return this.open( err => {
+            this.open( err => {
                 if (err) {
                    return reject(err);
                 }
                 return resolve();
-            })
+            });
         });
     }
 
@@ -331,6 +330,8 @@ class MemoryAdapter {
         };
         (async function migrate() {
             
+            await self.openAsync();
+            await self.executeAsync('SELECT 1==2', null);
             // check if table `migrations`  exists or not
             let exists = await self.table('migrations').existsAsync();
             if (exists === false) {

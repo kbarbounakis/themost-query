@@ -31,6 +31,6 @@ class TimeSpan {
     }
 }
 
-module.exports = {
+export {
     TimeSpan
 };

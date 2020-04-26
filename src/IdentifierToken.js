@@ -1,4 +1,4 @@
-const {Token} = require("./Token");
+import {Token} from "./Token";
 /**
  * @class IdentifierToken
  * @param {string} name The identifier's name
@@ -14,6 +14,6 @@ class IdentifierToken extends Token {
         return this.identifier;
     }
 }
-module.exports = {
+export {
     IdentifierToken
 };

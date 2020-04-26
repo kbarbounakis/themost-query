@@ -6,13 +6,13 @@
  * found in the LICENSE file at https://themost.io/license
  */
 
-const _ = require('lodash');
-const {Args} = require('@themost/common');
-const { QueryField } = require('./QueryField');
-const { QueryCollection } = require('./QueryCollection');
-const {getOwnPropertyName, isMethodOrNameReference} = require('./query');
-const { ClosureParser } = require('./closures');
-const {hasOwnProperty} = require('./has-own-property');
+import _ from 'lodash';
+import {Args} from '@themost/common';
+import { QueryField } from './QueryField';
+import { QueryCollection } from './QueryCollection';
+import {getOwnPropertyName, isMethodOrNameReference} from './query';
+import { ClosureParser } from './ClosureParser';
+import {hasOwnProperty} from './has-own-property';
 
 class InvalidLeftOperandError extends Error {
     constructor() {
@@ -1353,6 +1353,7 @@ class QueryExpression {
             else
                 return this.escape(val.valueOf());
         }
+        // eslint-disable-next-line no-control-regex
         val = val.replace(/[\0\n\r\b\t\\'"\x1a]/g, s => {
             switch (s) {
                 case "\0": return "\\0";
@@ -1386,6 +1387,6 @@ QueryExpression.LogicalOperators = { $or:'$or', $and:'$and', $not:'$not', $nor:'
  */
 QueryExpression.EvaluationOperators = { $mod:'$mod', $add:'$add', $sub:'$sub', $mul:'$mul', $div:'$div' };
 
-module.exports = {
+export {
     QueryExpression
 };

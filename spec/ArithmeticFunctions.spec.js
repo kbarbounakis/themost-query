@@ -1,4 +1,4 @@
-import { QueryExpression } from '../QueryExpression';
+import { QueryExpression } from '../src';
 // eslint-disable-next-line no-unused-vars
 import { add, subtract, multiply, divide, bitAnd } from 'mathjs';
 import { MemoryAdapter } from './TestMemoryAdapter';

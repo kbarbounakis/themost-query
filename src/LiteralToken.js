@@ -1,4 +1,4 @@
-const {Token} = require("./Token");
+import {Token} from "./Token";
 
 /**
  * @class
@@ -65,6 +65,6 @@ class LiteralToken extends Token {
     }
 }
 
-module.exports = {
+export {
     LiteralToken
 };

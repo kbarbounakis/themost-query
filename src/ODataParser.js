@@ -5,9 +5,7 @@
  * Use of this source code is governed by an BSD-3-Clause license that can be
  * found in the LICENSE file at https://themost.io/license
  */
-const _ = require("lodash");
-
-const {
+import {
     createArithmeticExpression,
     createComparisonExpression,
     createLogicalExpression,
@@ -20,12 +18,12 @@ const {
     isLogicalOperator,
     isMemberExpression,
     isMethodCallExpression
-} = require ('./expressions');
-const {LiteralToken} = require("./LiteralToken");
-const {Token} = require("./Token");
-const {IdentifierToken} = require("./IdentifierToken");
-const {SyntaxToken} = require("./SyntaxToken");
-const {TimeSpan} = require("./TimeSpan");
+} from './expressions';
+import {LiteralToken} from "./LiteralToken";
+import {Token} from "./Token";
+import {IdentifierToken} from "./IdentifierToken";
+import {SyntaxToken} from "./SyntaxToken";
+import {TimeSpan} from "./TimeSpan";
 
 /**
  * @class
@@ -357,6 +355,7 @@ class ODataParser {
 
     parseCommonItem(callback) {
         const self = this;
+        let value;
         //ensure callback
         callback = callback || (() => {});
         if (self.tokens.length===0) {
@@ -396,7 +395,7 @@ class ODataParser {
                 break;
             // eslint-disable-next-line no-case-declarations
             case Token.TokenType.Literal:
-                const value = self.currentToken.value;
+                value = self.currentToken.value;
                 self.moveNext();
                 callback.call(self, null, value);
                 break;
@@ -546,7 +545,7 @@ class ODataParser {
      * @param callback
      * @returns {MethodCallExpression}
      */
-    resolveMethod(method, args, callback) {
+    resolveMethod(_method, _args, callback) {
         if (typeof callback !== 'function')
             //sync process
             return null;
@@ -1046,8 +1045,9 @@ class ODataParser {
     }
 }
 
-module.exports = {
+export {
     ODataParser
 };
+
 
 

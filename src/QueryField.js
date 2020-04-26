@@ -6,8 +6,8 @@
  * found in the LICENSE file at https://themost.io/license
  */
 
-const { Args } = require('@themost/common');
-const { getOwnPropertyName, isMethodOrNameReference } = require('./query');
+import { Args } from '@themost/common';
+import { getOwnPropertyName, isMethodOrNameReference } from './query';
 /**
  * @class
  * @classdesc Represents a field expression that is going to be used in any query
@@ -361,6 +361,6 @@ class QueryField {
         return this._assignMethod.apply(this, ['$indexOfBytes', x, start]);
     }
 }
-module.exports = {
+export {
     QueryField
 };

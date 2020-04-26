@@ -1,5 +1,4 @@
-import { QueryCollection } from '../QueryCollection';
-import { QueryExpression } from '../QueryExpression';
+import { QueryCollection, QueryExpression } from '../src';
 // eslint-disable-next-line no-unused-vars
 import { MemoryAdapter } from './TestMemoryAdapter';
 import { initDatabase } from './TestMemoryDatabase';
@@ -9,7 +8,7 @@ describe('Format Select Expressions', () => {
         return await initDatabase();
     });
 
-    fit('should use QueryExpression.select()', async () => {
+    it('should use QueryExpression.select()', async () => {
         const Products = new QueryCollection('Products');
         let a = new QueryExpression().select( x => {
             x.ProductID,

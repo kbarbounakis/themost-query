@@ -1,4 +1,4 @@
-import { QueryField } from '../QueryField';
+import { QueryField } from '../src';
 
 describe('QueryField', () => {
     it('should create QueryField', () => {

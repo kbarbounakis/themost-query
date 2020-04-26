@@ -5,7 +5,7 @@
  * Use of this source code is governed by an BSD-3-Clause license that can be
  * found in the LICENSE file at https://themost.io/license
  */
-import { SqlFormatter } from '../SqlFormatter';
+import { SqlFormatter } from '../src';
 
 const REGEXP_SINGLE_QUOTE = /\\'/g;
 const SINGLE_QUOTE_ESCAPE = '\'\'';

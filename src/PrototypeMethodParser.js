@@ -17,6 +17,6 @@ class PrototypeMethodParser {
     }
  }
 
- module.exports = {
+ export {
     PrototypeMethodParser
  };

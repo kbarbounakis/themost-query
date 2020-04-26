@@ -1,5 +1,5 @@
-import { ClosureParser } from '../closures';
-import { MemberExpression, SequenceExpression } from '../expressions';
+import { ClosureParser } from '../src';
+import { MemberExpression, SequenceExpression } from '../src';
 // eslint-disable-next-line no-unused-vars
 import { round, ceil, floor, mod, multiply, subtract, divide, add, bitAnd } from 'mathjs';
 describe('ClosureParser', () => {

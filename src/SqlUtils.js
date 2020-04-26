@@ -5,7 +5,7 @@
  * Use of this source code is governed by an BSD-3-Clause license that can be
  * found in the LICENSE file at https://themost.io/license
  */
-const {hasOwnProperty} = require('./has-own-property');
+import {hasOwnProperty} from './has-own-property';
 /**
  * @param {string} tz
  */
@@ -189,6 +189,6 @@ class SqlUtils {
     }
 }
 
-module.exports = {
+export {
     SqlUtils
-};SqlUtils
+};

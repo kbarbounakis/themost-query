@@ -1,5 +1,5 @@
-const { Args } = require('@themost/common');
-const { getOwnPropertyName, isMethodOrNameReference } = require('./query');
+import { Args } from '@themost/common';
+import { getOwnPropertyName, isMethodOrNameReference } from './query';
 /**
  * @class
  * @property {string} name - A string which represents the name of the collection
@@ -102,6 +102,6 @@ class QueryCollection {
     }
 }
 
-module.exports = {
+export {
     QueryCollection
 };

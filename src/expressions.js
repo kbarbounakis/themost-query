@@ -20,15 +20,8 @@ class ArithmeticExpression {
     }
 
     exprOf() {
-        let p;
         if (this.left == null) {
             throw new Error('Expected left operand');
-        }
-        else if (typeof this.left.exprOf === 'function') { 
-            p = this.left.exprOf(); 
-        }
-        else {
-            p = this.left;
         }
         if (this.operator == null)
             throw new Error('Expected arithmetic operator.');
@@ -471,7 +464,7 @@ function isMethodCallExpression(obj) {
     return obj instanceof MethodCallExpression;
 }
 
-module.exports = {
+export {
     ArithmeticExpression,
     MemberExpression,
     LogicalExpression,

@@ -1,7 +1,5 @@
-import { ClosureParser } from '../closures';
-import { QueryCollection } from '../QueryCollection';
-import { QueryExpression } from '../QueryExpression';
-import { SqlFormatter } from '../SqlFormatter';
+import { QueryExpression } from '../src';
+
 // eslint-disable-next-line no-unused-vars
 import { round, ceil, floor, mod, multiply, subtract, divide, add, bitAnd, min, max } from 'mathjs';
 import { MemoryAdapter } from './TestMemoryAdapter';

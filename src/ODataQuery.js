@@ -5,8 +5,8 @@
  * Use of this source code is governed by an BSD-3-Clause license that can be
  * found in the LICENSE file at https://themost.io/license
  */
-const {Args, TextUtils} = require('@themost/common');
-const {hasOwnProperty} = require('./has-own-property');
+import {Args, TextUtils} from '@themost/common';
+import {hasOwnProperty} from './has-own-property';
 // eslint-disable-next-line no-control-regex
 const STR_ESCAPE_REGEXP = /[\0\n\r\b\t\\'"\x1a]/g;
 // noinspection JSUnusedGlobalSymbols
@@ -552,6 +552,6 @@ class ODataQuery {
     }
 
 }
-module.exports = {
+export {
     ODataQuery
 };

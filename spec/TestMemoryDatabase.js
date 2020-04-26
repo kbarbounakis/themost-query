@@ -1,5 +1,5 @@
 import { MemoryAdapter } from './TestMemoryAdapter';
-import { QueryExpression } from '../QueryExpression';
+import { QueryExpression } from '../src';
 import Customers from './test/config/models/Customer.json';
 import Categories from './test/config/models/Category.json';
 import Shippers from './test/config/models/Shipper.json';
@@ -12,16 +12,22 @@ import OrderDetails from './test/config/models/OrderDetail.json';
 async function migrateAsync(model) {
     const db = new MemoryAdapter();
     try {
-        await db.migrateAsync({
+        const migrateAsyncData = {
             version: model.version,
             appliesTo: model.source,
             model: model.name,
             add: model.fields
-        });
-        model.seed.forEach(async (item) => {
-            const q = new QueryExpression().insert(item).into(model.source);
-            await db.executeAsync(q);
-        });
+        };
+        await db.migrateAsync(migrateAsyncData);
+        if (migrateAsyncData.updated === true) {
+            await db.closeAsync();
+            return;
+        }
+        let item;
+        for(let i = 0; i < model.seed.length; i++) {
+            item = model.seed[i];
+            await db.executeAsync(new QueryExpression().insert(item).into(model.source))
+        }
         await db.closeAsync();
     }
     catch (err) {
@@ -34,7 +40,8 @@ async function migrateAsync(model) {
 
 async function initDatabase() {
     // change NODE_ENV (do not log statement while adding data)
-    process.env.NODE_ENV = 'development';
+    process.env.NODE_ENV = 'devel';
+    // create migrations
     await migrateAsync(Customers);
     await migrateAsync(Shippers);
     await migrateAsync(Categories);

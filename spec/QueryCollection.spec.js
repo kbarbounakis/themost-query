@@ -1,4 +1,4 @@
-import { QueryCollection } from '../QueryCollection';
+import { QueryCollection } from '../src';
 
 describe('QueryCollection', () => {
     it('should create QueryCollection', () => {

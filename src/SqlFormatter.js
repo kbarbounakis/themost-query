@@ -6,12 +6,11 @@
  * found in the LICENSE file at https://themost.io/license
  */
 
-const { Args } = require('@themost/common');
-const { SqlUtils } = require('./SqlUtils');
-const { getOwnPropertyName, isMethodOrNameReference } = require('./query');
-const { QueryCollection } = require('./QueryCollection');
-const { QueryExpression } = require('./QueryExpression');
-const {hasOwnProperty} = require('./has-own-property');
+import { Args } from '@themost/common';
+import { SqlUtils } from './SqlUtils';
+import { getOwnPropertyName, isMethodOrNameReference } from './query';
+import { QueryCollection } from './QueryCollection';
+import { QueryExpression } from './QueryExpression';
 
 class ExpectedWhereExpression extends Error {
     /**
@@ -905,7 +904,7 @@ class SqlFormatter {
      * @returns {string}
      */
     $regex(left, expr) {
-        return `(${this.escape(left)} REGEXP \'${this.escape(expr, true)}\')`;
+        return `(${this.escape(left)} REGEXP '${this.escape(expr, true)}')`;
     }
 
     /**
@@ -915,7 +914,7 @@ class SqlFormatter {
      * @returns {string}
      */
     $text(p0, p1) {
-        return `(${this.escape(p0)} REGEXP \'${this.escape(p1, true)}\')`;
+        return `(${this.escape(p0)} REGEXP '${this.escape(p1, true)}')`;
     }
 
     /**
@@ -1054,6 +1053,6 @@ class SqlFormatter {
 
 }
 
-module.exports = {
+export {
     SqlFormatter
 };

@@ -1,6 +1,4 @@
-import { QueryExpression } from '../QueryExpression';
-import { QueryField } from '../QueryField';
-import { SqlFormatter } from '../SqlFormatter';
+import { QueryExpression, QueryField, SqlFormatter } from '../src';
 
 describe('SqlFormatter', () => {
 

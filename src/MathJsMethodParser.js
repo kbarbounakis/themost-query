@@ -1,6 +1,6 @@
-const {MethodCallExpression} = require('../expressions');
-const {parse} = require('esprima');
-const {floor} = require('mathjs');
+import {MethodCallExpression} from './expressions';
+import {parse} from 'esprima';
+import {floor} from 'mathjs';
 
 /**
  *
@@ -85,6 +85,6 @@ class MathJsMethodParser {
     }
 }
 
-module.exports = {
+export {
     MathJsMethodParser
-}
+};

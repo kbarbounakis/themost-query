@@ -1,6 +1,4 @@
-import { QueryExpression } from '../QueryExpression';
-import { QueryField } from '../QueryField';
-import { QueryCollection } from '../QueryCollection';
+import { QueryExpression, QueryField } from '../src';
 
 describe('QueryExpression', () => {
     it('should use QueryExpression.where()', () => {
