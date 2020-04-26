@@ -6,7 +6,8 @@
  * found in the LICENSE file at https://themost.io/license
  */
 
-import _ from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
+import isEqual from 'lodash/isEqual';
 import {Args} from '@themost/common';
 import { QueryField } from './QueryField';
 import { QueryCollection } from './QueryCollection';
@@ -48,7 +49,7 @@ class QueryExpression {
      * @returns {QueryExpression}
      */
     clone() {
-        return _.cloneDeep(this);
+        return cloneDeep(this);
     }
     /**
      * Sets the alias of active expression (collection or field)
@@ -727,7 +728,7 @@ class QueryExpression {
             const addField = Object.assign({}, left);
             // search addFields collection
             alias = Object.keys(this.$addFields).find( key => {
-                return _.isEqual(addField, this.$addFields[key]);
+                return isEqual(addField, this.$addFields[key]);
             });
             if (alias == null) {
                 // get alias
@@ -810,7 +811,7 @@ class QueryExpression {
             // search if expression graph already exists
             this.$addFields = this.$addFields || { };
             let alias = Object.keys(this.$addFields).find( key => {
-                return _.isEqual(addField, this.$addFields[key]);
+                return isEqual(addField, this.$addFields[key]);
             });
             if (alias == null) {
                 // get alias
